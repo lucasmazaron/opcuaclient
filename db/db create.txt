@@ -1,0 +1,55 @@
+-- Drop table
+
+-- DROP TABLE public.tbcliente;
+
+CREATE TABLE public.tbcliente (
+	id bigserial NOT NULL,
+	nome varchar(255) NOT NULL,
+	cnpj varchar(14) NOT NULL,
+	CONSTRAINT tbcliente_pk PRIMARY KEY (id)
+);
+
+
+-- Drop table
+
+-- DROP TABLE public.tbclp;
+
+CREATE TABLE public.tbclp (
+	id bigserial NOT NULL,
+	setor_clp varchar NULL,
+	nome_setor_externo varchar(1) NOT NULL DEFAULT 'N'::character varying,
+	cliente_id int8 NOT NULL,
+	applicationname varchar NOT NULL,
+	end_point varchar NOT NULL,
+	CONSTRAINT tbclp_pk PRIMARY KEY (id),
+	CONSTRAINT tbclp_fk FOREIGN KEY (cliente_id) REFERENCES tbcliente(id) ON UPDATE RESTRICT ON DELETE RESTRICT
+);
+
+
+-- Drop table
+
+-- DROP TABLE public.tbclpfields;
+
+CREATE TABLE public.tbclpfields (
+	id bigserial NOT NULL,
+	clp_id int8 NOT NULL,
+	node_id varchar NOT NULL,
+	descricao varchar(60) NOT NULL,
+	CONSTRAINT tbclpfields_pk PRIMARY KEY (id),
+	CONSTRAINT tbclpfields_fk FOREIGN KEY (clp_id) REFERENCES tbclp(id) ON UPDATE RESTRICT ON DELETE RESTRICT
+);
+
+
+-- Drop table
+
+-- DROP TABLE public.tbdata;
+
+CREATE TABLE public.tbdata (
+	id bigserial NOT NULL,
+	clp_id int8 NOT NULL,
+	value varchar NOT NULL,
+	node_id varchar NOT NULL,
+	data_hora timestamp(0) NOT NULL,
+	CONSTRAINT tbdata_pk PRIMARY KEY (id),
+	CONSTRAINT tbdata_fk FOREIGN KEY (clp_id) REFERENCES tbclp(id) ON UPDATE RESTRICT ON DELETE RESTRICT
+);
